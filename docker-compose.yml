@@ -1,0 +1,109 @@
+version: "3.5"
+
+#### Template service
+x-app: &default-app
+  env_file:
+    - ".env"
+  restart: "unless-stopped"
+  stop_grace_period: "3s"
+#####
+
+services:
+  loki:
+    <<: *default-app
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    container_name: loki-${ENV}
+#    user: "1000:1000"
+    user: "0"
+    env_file:
+      - 'loki/.env.loki'
+      - 'loki/${ENV}/.env.loki'
+    volumes:
+      - loki:/loki
+      - ${PWD}/loki/${ENV}/conf/loki-config.yaml:/etc/loki/loki-config.yaml
+    command: -config.file=/etc/loki/loki-config.yaml
+    networks:
+      log: {}
+
+  grafana:
+    <<: *default-app
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    container_name: grafana-${ENV}
+    env_file:
+      - 'grafana/.env.grafana'
+      - 'grafana/${ENV}/.env.grafana'
+    volumes:
+      - grafana:/var/lib/grafana
+#      - ${PWD}/grafana/${ENV}/conf:/etc/grafana
+      - ${PWD}/grafana/${ENV}/conf/datasources/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+    networks:
+      - log
+#      - traefik-proxy
+#    labels:
+#      - traefik.enable=true
+#      - traefik.http.services.loki.loadbalancer.server.port=3000
+#      - traefik.http.routers.loki.rule=Host(`loki.example.com`)
+#      - traefik.http.routers.loki.tls.certresolver=le
+#      - traefik.http.routers.loki.entrypoints=websecure
+#      - traefik.docker.network=traefik-proxy
+
+## TODO: Configuration Alertmanager:
+## https://blog.ruanbekker.com/blog/2020/11/06/how-to-setup-alerting-with-loki/
+## TODO: Configuration Traefik
+## TODO: Configuration Auto provisionning LOKI datasource dans Grafana
+### https://blog.ruanbekker.com/blog/2020/11/06/how-to-setup-alerting-with-loki/
+
+
+  promtail:
+    <<: *default-app
+    image: grafana/promtail:latest
+    container_name: promtail-${ENV}
+    env_file:
+      - 'promtail/.env.promtail'
+      - 'promtail/${ENV}/.env.promtail'
+    volumes:
+      - ${PWD}/promtail/${ENV}/conf/promtail-config.yaml:/etc/promtail/config.yml
+    volumes:
+      - /var/log:/var/log
+    command: -config.file=/etc/promtail/config.yml
+    networks:
+      - log
+
+  influxdb:
+    <<: *default-app
+    container_name: influxdb-${ENV}
+    image: influxdb:latest
+    env_file:
+      - 'influxdb/.env.influxdb'
+      - 'influxdb/${ENV}/.env.influxdb'
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb:/var/lib/influxdb2
+      - ${PWD}/influxdb/${ENV}/conf/config.yml:/etc/influxdb2/config.yml
+      - ${PWD}/influxdb/${ENV}/scripts:/docker-entrypoint-initdb.d
+    networks:
+      database: {}
+      log: {}
+
+networks:
+  log:
+    external: false
+    name: logging-stack-network-${ENV}
+
+  database:
+    external: false
+    name: logging-database-network-${ENV}
+
+volumes:
+  # Volumes will be stored by default locally under /var/lib/docker/volumes/
+  loki:
+    name: loki-${ENV}
+  grafana:
+    name: grafana-${ENV}
+  influxdb:
+    name: influxdb-${ENV}
