@@ -20,7 +20,7 @@ datasources:
     # <string> custom UID which can be used to reference this datasource in other parts of the configuration, if not specified will be generated automatically
     uid: 1
     # <string> url
-    url: http://loki-prod:3100
+    url: http://loki:3100
     # <bool> enable/disable basic auth
     basicAuth: false
     # <bool> enable/disable with credentials headers
@@ -34,7 +34,7 @@ datasources:
   - name: InfluxDB_Flux
     type: "influxdb"
     access: "proxy"
-    url: "http://influxdb-prod:8086"
+    url: "http://influxdb:8086"
     editable: true
     secureJsonData:
       token: "3i3v9zbkdueLxSdsjHMEZOz4qtrAWw0Qe18wOWGCFK1Z_GAb5zGkQ6MQxkSPqSTd-tpIGjxyv88k2MEmEbw1nw=="
@@ -48,7 +48,7 @@ datasources:
   - name: InfluxDB_V2_InfluxQL
     type: "influxdb"
     access: "proxy"
-    url: "http://influxdb-prod:8086"
+    url: "http://influxdb:8086"
     editable: true
     # This database should be mapped to a bucket
     database: internal
