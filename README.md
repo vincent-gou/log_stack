@@ -25,22 +25,30 @@ influx v1 dbrp create --db python_test --rp 7d --bucket-id a50b5e127deb4bce --de
 
 ## Grafana
 
-- [x] Autoprovision datasources
+- [x] Auto-provision datasources
   - [x] Loki
   - [x] InfluxDB Flux
   - [x] InfluxDB influxQL
+  - [ ] InfluxDB V1 
 
-- [ ] Autoprovision Dashboards
+- [ ] Auto-provision Dashboards
 - [ ] UI customizations
 
 
 ## InfluxDB
-- [x] Create bucket on startup
-- [x] Create scrapper from loki container
+- [x] Create buckets on startup
+  - [x] loki_bucket
+  - [x] grafana_bucket
+  - [x] influxdb_bucker
+- [x] Create scrappers on startup
+  - [x] Create loki scrapper
+  - [x] Create influxdb scrapper
+  - [x] Create grafana scrapper
 - [ ] Create alerts 
 - [ ] Create Tasks
 - [ ] Check InfluxDB internal metrics
 - [ ] Create different users with different access rights on buckets
+- [ ] Add InfluxDB V1 access to all datasources
 
 # To sort 
 - [ ] Push promtail 
