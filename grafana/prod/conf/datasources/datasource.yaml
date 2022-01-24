@@ -57,3 +57,29 @@ datasources:
       httpHeaderName1: 'Authorization'
     secureJsonData:
       httpHeaderValue1: 'Token 3i3v9zbkdueLxSdsjHMEZOz4qtrAWw0Qe18wOWGCFK1Z_GAb5zGkQ6MQxkSPqSTd-tpIGjxyv88k2MEmEbw1nw=='
+
+  - name: InfluxDB_V2_InfluxQL_muse_metrics
+    type: "influxdb"
+    access: "proxy"
+    url: "http://influxdb:8086"
+    editable: true
+    # This database should be mapped to a bucket
+    database: muse_metrics
+    jsonData:
+      httpMode: GET
+      httpHeaderName1: 'Authorization'
+    secureJsonData:
+      httpHeaderValue1: 'Token 3i3v9zbkdueLxSdsjHMEZOz4qtrAWw0Qe18wOWGCFK1Z_GAb5zGkQ6MQxkSPqSTd-tpIGjxyv88k2MEmEbw1nw=='
+
+  - name: InfluxDB_V2_InfluxQL_muse_system_metrics
+    type: "influxdb"
+    access: "proxy"
+    url: "http://influxdb:8086"
+    editable: true
+    # This database should be mapped to a bucket
+    database: muse_system_metrics
+    jsonData:
+      httpMode: GET
+      httpHeaderName1: 'Authorization'
+    secureJsonData:
+      httpHeaderValue1: 'Token 3i3v9zbkdueLxSdsjHMEZOz4qtrAWw0Qe18wOWGCFK1Z_GAb5zGkQ6MQxkSPqSTd-tpIGjxyv88k2MEmEbw1nw=='
