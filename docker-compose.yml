@@ -40,6 +40,7 @@ services:
       - grafana:/var/lib/grafana
 #      - ${PWD}/grafana/${ENV}/conf:/etc/grafana
       - ${PWD}/grafana/${ENV}/conf/datasources/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+      - ${PWD}/grafana/${ENV}/conf/dashboards/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
     networks:
       - log
 #      - traefik-proxy
